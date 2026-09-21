@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: dashboard-establecimientos-armenia
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:server
