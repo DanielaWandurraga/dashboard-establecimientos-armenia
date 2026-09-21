@@ -41,6 +41,7 @@ df_dash["ULT-ANO_REN-LIMPIO"] = np.where(
 )
 
 columnas_fecha = ["FEC-MATRICULA", "FEC-RENOVACION", "FECHA-DATOS"]
+
 for columna in columnas_fecha:
     df_dash[columna + "-LIMPIA"] = pd.to_datetime(
         df_dash[columna].astype("string").str.replace(".", "", regex=False),
@@ -48,16 +49,31 @@ for columna in columnas_fecha:
         errors="coerce"
     )
 
+df_dash["ANIO_MATRICULA"] = df_dash["FEC-MATRICULA-LIMPIA"].dt.year
+
 df_dash["MUN-COMERCIAL"] = (
-    df_dash["MUN-COMERCIAL"].fillna("Sin información").astype(str).str.strip()
+    df_dash["MUN-COMERCIAL"]
+    .fillna("Sin información")
+    .astype(str)
+    .str.strip()
 )
+
 df_dash["ACTIVIDAD"] = (
-    df_dash["ACTIVIDAD"].fillna("Sin información").astype(str).str.strip()
+    df_dash["ACTIVIDAD"]
+    .fillna("Sin información")
+    .astype(str)
+    .str.strip()
 )
 
-municipios = sorted(df_dash["MUN-COMERCIAL"].dropna().unique().tolist())
-anios = sorted(df_dash["ANIO-DATOS-LIMPIO"].dropna().astype(int).unique().tolist())
+datos_dashboard = df_dash.copy()
 
+municipios = sorted(
+    df_dash["MUN-COMERCIAL"].dropna().unique().tolist()
+)
+
+anios = sorted(
+    df_dash["ANIO-DATOS-LIMPIO"].dropna().astype(int).unique().tolist()
+)
 # ---------------------------------------------------------
 # Aplicación Dash
 # ---------------------------------------------------------
